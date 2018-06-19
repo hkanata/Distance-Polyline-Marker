@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+		<meta charset="utf-8">
+		<title>Distance</title>
+		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization,geometry,drawing&key=AIzaSyDsYL3M4h1-TuDaDdDVWX6nTdKtk-TwEUw"></script>
+		<script src="polylineMarkerDistLib.js"></script>
+		<style>
+			#map {
+				height: 90%;
+			}
+			html, body {
+				height: 100%;
+				margin: 0;
+				padding: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="results" style='font-size: 26px;margin: 0 auto;width: 300px;'>Results</div>
+		<div id="map"></div>
+		<script>
+
+			var flightPath;
+			var marker;
+			function initMap() {
+				var myLatLng = {lat: 40.62136542727805, lng: -73.96257983477432};
+				var map = new google.maps.Map(document.getElementById('map'), {
+					zoom: 14,
+					center: myLatLng,
+					mapTypeId: 'terrain'
+				});
+         
+				marker = new google.maps.Marker({
+					position: myLatLng,
+					map: map,
+					title: 'Hello World!'
+				});
+      
+				var flightPlanCoordinates = [
+					{lat: 40.648501, lng: -73.975123},
+					{lat: 40.598007, lng: -73.965295},
+					{lat: 40.598349, lng: -73.961343},
+					{lat: 40.602979, lng: -73.961469},
+					{lat: 40.604613, lng: -73.947507},
+					{lat: 40.619029, lng: -73.950297},
+				];
+
+				flightPath = new google.maps.Polyline({
+					path: flightPlanCoordinates,
+					geodesic: true,
+					strokeColor: '#FF0000',
+					strokeOpacity: 1.0,
+					strokeWeight: 5
+				});
+         
+				flightPath.setMap(map);
+				printResults(bdccGeoDistanceToPolyMtrs(flightPath, marker.getPosition()).toFixed(2)+" Metros");
+				
+				map.addListener('click', function(a) {
+					if( marker!==undefined ){
+						marker.setMap(null);
+					}
+					 
+					marker = new google.maps.Marker({
+						position: a.latLng,
+						map: map,
+						title: 'Hello World!'
+					});
+					//$("#results").html()        
+					
+					// Here calling the function
+					var metros = bdccGeoDistanceToPolyMtrs(flightPath, marker.getPosition());
+					
+					printResults(metros.toFixed(2)+" Metros");
+				});
+         }
+		 
+		 function printResults(res){
+			document.getElementById("results").innerHTML = res;
+		 }
+		 
+         google.maps.event.addDomListener(window, 'load', initMap);
+	</script>
+   </body>
+</html>
