@@ -47,7 +47,7 @@ bdccGeoDistanceToPolyMtrs(polyline, marker.getPosition());
 
 ## Authors
 
-* **hkanata** - *Initial work* - [PurpleBooth](https://github.com/hkanata)
+* **hkanata** - *Initial work* - [hkanata](https://github.com/hkanata)
 
 ## License
 
